@@ -2,14 +2,13 @@
 
 基于 AI 的儿童绘本自动生成系统。从故事主题出发，自动完成角色设计、分镜脚本、Prompt 编写、角色参考图生成、逐页插画生成，输出一本完整的绘本。
 
-
-👉 实现效果可以看：**[如何用 NanoBanana2 给小孩定制绘本](https://km.woa.com/articles/show/654837)**
+👉 实现效果可以看：**  **
 
 
 ## 🚀 安装
 
 ```bash
-git clone git@git.woa.com:kelvinzhou/storybook.git
+git clone https://github.com/nancywu5-hk/Storybook/
 cd storybook
 npm install
 ```
@@ -43,7 +42,7 @@ AI_IMAGE_MODEL=gemini-3.1-flash-image-preview
 ### `/storybook` - 生成绘本 ✨
 
 ```
-/storybook 小狐狸找妈妈
+/storybook 小蝌蚪找妈妈
 ```
 
 **📂 生成结果：**
