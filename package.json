@@ -2,7 +2,8 @@
   "name": "storybook",
   "module": "index.ts",
   "devDependencies": {
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "tsx": "^4.21.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
