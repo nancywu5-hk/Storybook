@@ -27,7 +27,7 @@ export async function generateImage(prompt: string, outputPath: string, referenc
 
   const body = {
     contents: [{ parts }],
-    generationConfig: { response_modalities: ["IMAGE"] },
+    generationConfig: { responseModalities: ["IMAGE"] },
   };
 
   for (let attempt = 1; attempt <= 3; attempt++) {
@@ -50,11 +50,19 @@ export async function generateImage(prompt: string, outputPath: string, referenc
       const candidates = data.candidates;
       if (!candidates || !candidates[0]) {
         console.error("  No candidates in response");
+        console.error("  Full response:", JSON.stringify(data).substring(0, 500));
         if (attempt < 3) { await new Promise(r => setTimeout(r, 5000)); continue; }
         throw new Error("No candidates");
       }
 
-      for (const part of candidates[0].content.parts) {
+      const parts_resp = candidates[0]?.content?.parts;
+      if (!parts_resp || !Array.isArray(parts_resp)) {
+        console.error("  No parts in response. Candidate:", JSON.stringify(candidates[0]).substring(0, 500));
+        if (attempt < 3) { await new Promise(r => setTimeout(r, 5000)); continue; }
+        throw new Error("No parts in response");
+      }
+
+      for (const part of parts_resp) {
         const imgData = part.inlineData || part.inline_data;
         if (imgData) {
           const imgBuf = Buffer.from(imgData.data, "base64");
@@ -65,8 +73,12 @@ export async function generateImage(prompt: string, outputPath: string, referenc
       }
 
       // Debug: show what parts we got
-      const partTypes = candidates[0].content.parts.map((p: any) => Object.keys(p).join(","));
+      const partTypes = parts_resp.map((p: any) => Object.keys(p).join(","));
       console.error(`  No image data in response parts. Part types: [${partTypes.join("; ")}]`);
+      // Show text content for debugging
+      for (const part of parts_resp) {
+        if (part.text) console.error(`  Text: ${part.text.substring(0, 200)}`);
+      }
       if (attempt < 3) { await new Promise(r => setTimeout(r, 5000)); continue; }
       throw new Error("No image in response");
 
