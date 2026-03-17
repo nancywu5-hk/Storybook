@@ -1,0 +1,5 @@
+# 第 2 页 Prompt — 02-page
+
+Children's picture book illustration, warm soft watercolor style, similar to Axel Scheffler. Consistent character design throughout.
+
+A pond scene showing both above and below the water surface. ABOVE water: a large white mother duck swims gracefully, followed by three fluffy yellow ducklings in a neat row, looking warm and happy as a family. BELOW water: DOUDOU, a round shiny black tadpole with big sparkling eyes, tiny waterweed curl on head, and small red scarf, has stopped swimming completely. He gazes upward at the duck family with a slightly bewildered and wistful expression. PAOPAO, a slightly smaller dark gray tadpole with long eyelashes, light blue tail tip, and yellow water lily on her head, swims up to Doudou's side, tilting her little head to look at him with concern. The contrast between the bright sunny surface (where the duck family swims happily) and the slightly dimmer underwater (where the two tadpoles watch) creates an emotional mood. Soft watercolor, warm colors, gentle emotional storytelling.

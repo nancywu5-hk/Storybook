@@ -1,0 +1,5 @@
+# 第 6 页 Prompt — 06-page
+
+Children's picture book illustration, watercolor style, similar to Axel Scheffler. Consistent character design throughout. DRAMATIC MOOD SHIFT - darker tones.
+
+A dark, dense tangle of waterweed underwater. The scene is noticeably darker than previous pages. DOUDOU, the round shiny black tadpole with red scarf (one corner caught on waterweed) and waterweed curl bangs, is alone and trapped inside the thick, dark waterweed. Only faint threads of light seep through the gaps between the dense plants. His big eyes are wide with fear and panic, his mouth open as if calling out for help. In the far upper right corner of the image, barely visible outside the waterweed tangle, PAOPAO the dark gray tadpole with yellow flower can be faintly seen swimming anxiously back and forth, searching desperately. The overall color palette shifts to dark greens, deep blues, and shadows, conveying a feeling of being lost and scared. Watercolor style but with muted, cooler tones to show the emotional shift.

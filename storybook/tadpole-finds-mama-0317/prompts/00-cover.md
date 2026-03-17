@@ -1,0 +1,5 @@
+# 封面 Prompt — 00-cover
+
+Children's picture book cover illustration, warm soft watercolor style, similar to Axel Scheffler. Title: "Tadpole Finds Mama".
+
+A bright, warm pond scene. In the center of the image, two cute little tadpoles swim side by side in crystal-clear water: DOUDOU, a round shiny black tadpole with big sparkling eyes (black pupils with white highlights), a tiny curl of waterweed on his head like bangs, wearing a small red scarf around his neck; and PAOPAO, a slightly smaller round dark gray tadpole with round eyes and long eyelashes, a longer tail with light blue tip, wearing a tiny yellow water lily flower on her head. They look up curiously toward the distance. The pond has lily pads, waterweed, and tiny bubbles floating up. In the far background on a large lily pad, a bright emerald green frog (MAMA) with big warm golden eyes sits gracefully, barely visible. Sunlight streams down from above the water surface, making the whole scene warm and inviting. The book title in cute rounded Chinese characters at the top. Consistent character design, bright warm colors, simple clean composition.

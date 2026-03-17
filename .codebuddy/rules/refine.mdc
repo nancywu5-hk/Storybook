@@ -1,0 +1,108 @@
+---
+description: 
+alwaysApply: false
+enabled: true
+updatedAt: 2026-03-17T09:27:42.805Z
+provider: 
+---
+
+# 🔧 Refine - 绘本页面精调 Skill
+
+## 概述
+
+对已生成的绘本页面做局部修改（如修改表情、动作、颜色），无需重新生成整本书。
+
+## 使用方式
+
+用户输入格式：`/refine {图片路径} {修改指令}`
+
+示例：
+```
+/refine storybook/fox-finds-mama-0315/03-page.jpeg 小兔子表情应该更开心，嘴角上扬
+```
+
+## 执行流程
+
+### 第一步：解析参数
+
+从用户输入中提取：
+- `image_path`：要修改的图片文件路径
+- `modification`：修改指令（中文描述）
+
+### 第二步：定位相关资源
+
+根据图片路径，自动找到同一绘本目录下的：
+1. **角色参考图**：`characters/characters.jpeg`
+2. **原始 Prompt**：对应页码的 prompt 文件（如 `03-page.jpeg` → `prompts/03-page.md`）
+3. **原始图片**：用户指定的图片文件
+
+如果找不到对应的 prompt 文件，则基于图片内容描述生成 prompt。
+
+### 第三步：读取配置
+
+读取项目根目录 `.env` 文件获取 API 配置：
+- `AI_API_KEY`
+- `AI_BASE_URL`
+- `AI_IMAGE_MODEL`
+
+### 第四步：构建修改 Prompt
+
+将原始 Prompt + 修改指令组合：
+
+```
+Based on the original illustration, make the following modification:
+{modification_translated_to_english}
+
+Original prompt: {original_prompt_content}
+
+Keep the character design consistent with the reference image.
+Keep the overall scene composition similar to the original image.
+Only modify the specified elements.
+Style: children's picture book illustration, soft watercolor, warm colors.
+```
+
+### 第五步：调用 API 重新生成
+
+```bash
+curl "${AI_BASE_URL}/v1beta/models/${AI_IMAGE_MODEL}:generateContent" \
+  -H "x-goog-api-key: ${AI_API_KEY}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [{
+      "parts": [
+        {"text": "{combined_prompt}"},
+        {"inline_data": {"mime_type": "image/jpeg", "data": "{base64_of_character_reference}"}},
+        {"inline_data": {"mime_type": "image/jpeg", "data": "{base64_of_original_image}"}}
+      ]
+    }],
+    "generationConfig": {
+      "responseModalities": ["TEXT", "IMAGE"]
+    }
+  }'
+```
+
+**关键点：**
+- 同时附带角色参考图 **和** 原始图片作为 inline_data
+- 这样模型能理解要保持的部分和要修改的部分
+
+### 第六步：保存结果
+
+1. 将新生成的图片保存为临时文件：`{原文件名}-refined.jpeg`
+   - 例如：`storybook/fox-finds-mama-0315/03-page-refined.jpeg`
+
+2. 展示给用户预览，询问：
+   - **满意** → 覆盖原图（将 refined 版本替换原文件），删除临时文件
+   - **不满意** → 可以继续输入 `/refine` 命令进行迭代修改
+   - **放弃** → 删除临时文件，保持原图不变
+
+### 第七步：更新长图（如果覆盖了原图）
+
+如果用户选择覆盖原图，需要重新拼接 `all-pages.jpeg`：
+- 使用 `sharp` 库重新拼接所有页面图片
+
+## 注意事项
+
+- 每次精调只修改一页，不影响其他页面
+- 保持角色设计一致性（始终附带 character sheet）
+- 修改指令可以是中文，会自动翻译为英文用于 prompt
+- 如果 API 调用失败，等待 5 秒后重试，最多重试 3 次

@@ -1,0 +1,5 @@
+# 第 1 页 Prompt — 01-page
+
+Children's picture book illustration, warm soft watercolor style, similar to Axel Scheffler. Consistent character design throughout.
+
+A sunny spring day at a beautiful pond. The water surface sparkles with golden light. Underwater scene: DOUDOU, a round shiny black tadpole with big sparkling eyes and a tiny curl of waterweed on his head, wearing a small red scarf, is hiding behind a clump of bright green waterweed, peeking out with half his round head visible, his expression playful and mischievous. PAOPAO, a slightly smaller round dark gray tadpole with round eyes, long eyelashes, a longer tail with light blue tip, and a tiny yellow water lily flower on her head, is swimming around nearby searching for him, her expression focused and happy. The pond bottom has colorful small pebbles and swaying waterweed. Tiny bubbles float up from between the water plants. The whole scene is warm, bright, and joyful. Soft watercolor textures, bright warm palette, simple background.

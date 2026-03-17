@@ -1,0 +1,5 @@
+# 第 5 页 Prompt — 05-page
+
+Children's picture book illustration, warm soft watercolor style, similar to Axel Scheffler. Consistent character design throughout.
+
+Underwater scene with a sense of journey. AUNTIE HEYE, a large dark green turtle with beautiful hexagonal patterns on her shell, swims slowly and gracefully. She has a long outstretched neck with kind, wrinkled eyes, and carries a small lotus leaf on her back like a little parasol. She extends one front flipper, pointing ahead toward the distance where a very large, bright green lily pad can be faintly seen through the water. DOUDOU, the round shiny black tadpole with red scarf and waterweed bangs, and PAOPAO, the smaller dark gray tadpole with yellow flower on head, float in front of her, looking tiny compared to the big turtle. They look up at her with trusting eyes. Warm golden light beams stream down from the water surface ahead, creating a sense of guidance and hope. The light points the way forward. Soft watercolor, warm inviting colors, sense of gentle direction.
