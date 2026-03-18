@@ -1,0 +1,3 @@
+# 第1页 - 相遇
+
+Children's book illustration in soft watercolor style. A golden furry puppy with floppy ears and a red collar is chasing a colorful butterfly on a green meadow. The puppy accidentally bumps into a snowy white kitten with sapphire blue eyes and a small bell collar who was peacefully sunbathing on the grass. The puppy looks surprised and worried, the kitten looks startled. Beautiful forest background with trees and flowers. Cute, warm, Axel Scheffler inspired style.
