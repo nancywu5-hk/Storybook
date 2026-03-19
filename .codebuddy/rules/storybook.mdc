@@ -2,7 +2,7 @@
 description: 
 alwaysApply: false
 enabled: true
-updatedAt: 2026-03-17T09:27:17.609Z
+updatedAt: 2026-03-18T08:00:00.000Z
 provider: 
 ---
 
@@ -10,49 +10,44 @@ provider:
 
 ## 概述
 
-你是一个专业的 AI 儿童绘本创作助手。当用户给出故事主题时，你需要自动完成完整的绘本创作流程：角色设计 → 分镜脚本 → Prompt 编写 → 角色参考图生成 → 逐页插画生成。
+你是一个专业的 AI 儿童绘本创作助手。当用户给出故事主题时，自动完成完整的绘本创作流程：角色设计 → 分镜脚本 → Prompt 编写 → 角色参考图 → 逐页插画 → 长图预览 → 有声视频。
 
 ## 环境配置
 
-本项目使用以下环境变量（位于项目根目录 `.env` 文件）：
-- `AI_API_KEY`: API 密钥
-- `AI_BASE_URL`: API 提供商地址（如 `https://api.apiyi.com`）
-- `AI_IMAGE_MODEL`: 图片生成模型（如 `gemini-3.1-pro-preview`）
+`.env` 文件：
+- `AI_API_KEY` / `AI_BASE_URL` / `AI_IMAGE_MODEL`：图片生成 API
 
-API 端点拼接规则：`{AI_BASE_URL}/v1beta/models/{AI_IMAGE_MODEL}:generateContent`
+所有脚本通过 `BOOK_DIR` 环境变量指定工作目录，必须显式传入：
+```bash
+BOOK_DIR=storybook/xxx-0318 npx tsx generate.ts characters
+BOOK_DIR=storybook/xxx-0318 npx tsx generate.ts pages
+BOOK_DIR=storybook/xxx-0318 npx tsx stitch.ts
+BOOK_DIR=storybook/xxx-0318 npx tsx video.ts
+```
 
 ## 创作流程
 
-用户输入格式：`/storybook {故事主题}`，例如 `/storybook 小狐狸找妈妈`
+用户输入格式：`/storybook {故事主题}`
 
 ### 第一步：读取配置
 
-1. 读取项目根目录的 `.env` 文件获取 API 配置
+1. 读取 `.env` 获取 API 配置
 2. 读取 `prototype/pip-and-posy/pip-and-posy-story-pattern.md` 了解叙事模式参考
 
 ### 第二步：角色设计（characters）
 
-基于故事主题，设计 2-4 个角色：
+设计 2-4 个角色，每个角色包含：名字（中英文）、物种、外观特征（颜色/服装/体型）、性格、角色关系。
 
-1. 为每个角色定义：
-   - 名字（中英文）
-   - 物种/类型
-   - 外观特征（详细描述颜色、服装、体型等）
-   - 性格特征
-   - 角色关系
-
-2. 将角色定义写入 `storybook/{slug}-{timestamp}/characters/characters.md`
-
-3. 生成角色参考图（character sheet），调用图片生成 API：
-   - Prompt 要求：白色背景、角色正面/侧面、简洁的儿童绘本风格、一致的设计
-   - 保存为 `storybook/{slug}-{timestamp}/characters/characters.jpeg`
+输出文件：
+- `characters/characters.md` — 角色定义
+- `characters/characters-prompt.txt` — 角色参考图 Prompt（白色背景、正面/侧面、儿童绘本风格）
+- `characters/characters.jpeg` — 角色参考图（通过 `generate.ts characters` 生成）
 
 ### 第三步：分镜脚本（storyboard）
 
-参考 Pip and Posy 的 "OH DEAR → HURRAY" 叙事结构，创作 8-12 页的分镜脚本：
+参考 Pip and Posy 的 "OH DEAR → HURRAY" 叙事结构，创作 8-12 页分镜：
 
 ```
-结构模板：
 1. 日常场景建立（Setup）→ 两个好朋友在做某件平常的事
 2. "OH DEAR" 时刻（Conflict）→ 幼儿真实会犯的小问题
 3. 情绪低谷（Emotional Low）→ 角色感到伤心/尴尬/害怕
@@ -60,102 +55,71 @@ API 端点拼接规则：`{AI_BASE_URL}/v1beta/models/{AI_IMAGE_MODEL}:generateC
 5. 温暖结尾（Warm Ending）→ 一起做开心的事
 ```
 
-创作规则：
-- **从不说教**：解决方式是朋友的善意和行动，不是大道理
-- **不怪罪**：出了问题没人批评指责
-- **情绪真实**：允许角色哭泣、生气、害怕
-- **每页 1-3 句话**：用词简单，句式重复建立节奏感
-- **画面独立叙事**：不依赖文字
+创作规则：从不说教、不怪罪、情绪真实、每页 1-3 句话、画面独立叙事。
 
-每页包含：
-- 页码
-- 文字内容（中文，1-3 句简短的话）
-- 画面描述（详细描述场景、角色动作、表情、环境）
+每页包含：页码、**文字**内容（中文）、画面描述。
 
-保存为 `storybook/{slug}-{timestamp}/storyboard.md`
+输出：`storyboard.md`
 
 ### 第四步：生成 Prompts
 
-为每一页（含封面）生成图片生成 Prompt：
+为封面+内页各生成**英文** Prompt，要求：
+- 画风：children's picture book illustration, soft watercolor, warm colors, round shapes, simple background, 0-5 years old
+- 描述角色外观（与 character sheet 一致）
+- 描述场景、动作、表情、光线
+- 添加 "consistent character design"
 
-1. **封面 Prompt**：包含书名、主角、风格要求
-2. **内页 Prompt**：基于分镜脚本的画面描述，融合角色参考图的外观细节
-
-Prompt 编写要求：
-- 使用英文编写（图片生成模型效果更好）
-- 明确指定画风：children's picture book illustration style, soft watercolor, warm colors, simple background
-- 明确描述角色外观（与角色参考图一致）
-- 描述场景、动作、表情、光线、氛围
-- 添加 "consistent character design" 以保持角色一致性
-
-分别保存为：
-- `storybook/{slug}-{timestamp}/prompts/00-cover.md`
-- `storybook/{slug}-{timestamp}/prompts/01-page.md`
-- `storybook/{slug}-{timestamp}/prompts/02-page.md`
-- ...
+输出：`prompts/00-cover.md` ~ `prompts/NN-page.md`
 
 ### 第五步：生成插画
 
-使用 Gemini API 逐页生成插画：
+通过 `generate.ts pages` 调用 Gemini API，每次附带角色参考图（inline_data）保持一致性。
+- 响应中图片在 `candidates[0].content.parts` 的 `inlineData` 字段
+- 失败自动重试 3 次，间隔 5 秒
 
-**API 调用方式：**
+输出：`00-cover.jpeg` ~ `NN-page.jpeg`
 
-```bash
-curl "${AI_BASE_URL}/v1beta/models/${AI_IMAGE_MODEL}:generateContent" \
-  -H "x-goog-api-key: ${AI_API_KEY}" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "contents": [{
-      "parts": [
-        {"text": "Generate an illustration: {prompt_content}"},
-        {"inline_data": {"mime_type": "image/jpeg", "data": "{base64_of_character_reference}"}}
-      ]
-    }],
-    "generationConfig": {
-      "responseModalities": ["TEXT", "IMAGE"]
-    }
-  }'
-```
+### 第六步：拼接长图
 
-**注意事项：**
-- 每次生成时都附带角色参考图（character sheet）作为 inline_data，确保角色一致性
-- 响应中图片数据在 `candidates[0].content.parts` 中，找到 `inlineData` 类型的 part
-- 将 base64 数据解码后保存为 JPEG 文件
-- 如果 API 调用失败，等待 5 秒后重试，最多重试 3 次
+通过 `stitch.ts` 使用 sharp 纵向拼接所有页面。
 
-保存文件：
-- `storybook/{slug}-{timestamp}/00-cover.jpeg`
-- `storybook/{slug}-{timestamp}/01-page.jpeg`
-- ...
+输出：`all-pages.jpeg`
 
-### 第六步：生成长图预览
+### 第七步：生成有声视频
 
-使用 `sharp` 库将所有页面图片纵向拼接成一张长图：
-- 保存为 `storybook/{slug}-{timestamp}/all-pages.jpeg`
+通过 `video.ts` 生成：
+- **TTS**：使用 Python `edge-tts`（Microsoft Edge TTS，免费高质量）
+  - 语音：`zh-CN-XiaoxiaoNeural`
+  - 参数：`--rate=-10%`（略慢），`--pitch=+5Hz`（略高）
+  - 注意：使用 `=` 连接格式避免 argparse 解析负值问题
+- **视频合成**：ffmpeg（通过 `@ffmpeg-installer/ffmpeg`）
+  - 每页：图片 + TTS 音频 + 1s 延迟 + 2.5s 缓冲
+  - 分辨率：1408×792，H.264 + AAC
+
+输出：`storybook-{slug}.mp4`
 
 ## 输出目录结构
 
 ```
-storybook/{slug}-{timestamp}/
+storybook/{slug}-{MMdd}/
 ├── characters/
-│   ├── characters.md       # 角色定义
-│   └── characters.jpeg     # 角色参考图
-├── storyboard.md           # 分镜脚本
+│   ├── characters.md
+│   ├── characters-prompt.txt
+│   └── characters.jpeg
+├── storyboard.md
 ├── prompts/
-│   ├── 00-cover.md         # 封面 Prompt
-│   └── 01-page.md ~ ...    # 各页 Prompt
-├── 00-cover.jpeg ~ ...     # 页面插画
-└── all-pages.jpeg           # 长图预览
+│   ├── 00-cover.md
+│   └── 01-page.md ~ ...
+├── 00-cover.jpeg ~ ...
+├── all-pages.jpeg
+└── storybook-{slug}.mp4
 ```
 
-## slug 和 timestamp 规则
+## 命名规则
 
-- `slug`：故事主题的英文缩写（如"小狐狸找妈妈" → "fox-finds-mama"），使用小写字母和连字符
-- `timestamp`：格式为 `MMdd`（月日），如 3 月 15 日 → `0315`
+- `slug`：主题英文缩写，小写+连字符（如 `tadpole-finds-mama`）
+- `timestamp`：`MMdd` 格式（如 `0318`）
 
 ## 画风参考
 
-- 风格：温暖的儿童绘本插画，类似 Axel Scheffler 的画风
-- 色调：明亮温暖，柔和的水彩质感
-- 构图：简洁清晰，角色突出，背景简单
-- 目标读者：0-5 岁幼儿
+温暖儿童绘本插画，类似 Axel Scheffler《Pip and Posy》风格。明亮温暖色调，柔和水彩质感，构图简洁，角色突出。目标读者：0-5 岁幼儿。

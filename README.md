@@ -1,8 +1,8 @@
-# 📖 Storybook - AI 儿童绘本生成系统
+# 📖 Storybook - AI 儿童绘本（有声视频）生成系统
 
 基于 AI 的儿童绘本自动生成系统。从故事主题出发，自动完成角色设计、分镜脚本、Prompt 编写、角色参考图生成、逐页插画生成，输出一本完整的绘本。
 
-👉 实现效果可以看：**  **
+👉 实现效果可以看：** /storybook/ducky-learns-brushing-0317 **
 
 
 ## 🚀 安装
@@ -57,7 +57,8 @@ storybook/{slug}-{timestamp}/
 │   ├── 00-cover.md         # 封面 Prompt
 │   └── 01-page.md ~ ...    # 各页 Prompt
 ├── 00-cover.jpeg ~ ...     # 页面插画
-└── all-pages.jpeg           # 长图预览
+├── all-pages.jpeg           # 长图预览
+└── story_book.mp4          # 有声绘本
 ```
 
 ### `/refine` - 精调页面 🔧
