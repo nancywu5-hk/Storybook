@@ -1,9 +1,7 @@
 ---
 description: 
+globs:
 alwaysApply: false
-enabled: true
-updatedAt: 2026-03-18T08:00:00.000Z
-provider: 
 ---
 
 # 📖 Storybook - AI 儿童绘本生成 Skill
@@ -68,12 +66,13 @@ BOOK_DIR=storybook/xxx-0318 npx tsx video.ts
 - 描述角色外观（与 character sheet 一致）
 - 描述场景、动作、表情、光线
 - 添加 "consistent character design"
+- 添加页码、storyboard.md中每页对应的**文字**内容（中文），页码与文字的字体样式一致，使用圆体 (Rounded Fonts)字体（中文）
 
 输出：`prompts/00-cover.md` ~ `prompts/NN-page.md`
 
 ### 第五步：生成插画
 
-通过 `generate.ts pages` 调用 Gemini API，每次附带角色参考图（inline_data）保持一致性。
+通过 `generate.ts pages` 调用 Gemini API，每次附带角色参考图（inline_data）保持角色一致性。
 - 响应中图片在 `candidates[0].content.parts` 的 `inlineData` 字段
 - 失败自动重试 3 次，间隔 5 秒
 
