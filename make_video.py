@@ -4,10 +4,10 @@ import re
 import subprocess
 import edge_tts
 
-BOOK_DIR = "storybook/wangwang-maomao-0318"
+BOOK_DIR = os.environ.get("BOOK_DIR", "storybook/wangwang-maomao-0318")
 IMAGE_DIR = os.path.join(BOOK_DIR, "with-text")
 STORYBOARD_PATH = os.path.join(BOOK_DIR, "storyboard.md")
-OUTPUT_VIDEO = os.path.join(BOOK_DIR, "wangwang-maomao-story.mp4")
+OUTPUT_VIDEO = os.path.join(BOOK_DIR, f"{os.path.basename(BOOK_DIR)}-story.mp4")
 TEMP_DIR = os.path.join(BOOK_DIR, "temp_video")
 
 # 声音配置：晓晓 (Xiaoxiao) 是非常柔和轻盈的中性/女性儿童故事声音
@@ -18,6 +18,9 @@ async def generate_audio(text, output_path):
     await communicate.save(output_path)
 
 def get_narration():
+    if not os.path.exists(STORYBOARD_PATH):
+        print(f"Error: {STORYBOARD_PATH} not found.")
+        return []
     with open(STORYBOARD_PATH, "r", encoding="utf-8") as f:
         content = f.read()
     
@@ -50,6 +53,8 @@ async def make_video():
         os.makedirs(TEMP_DIR)
         
     narrations = get_narration()
+    if not narrations:
+        return
     clip_files = []
     
     print(f"Total pages to process: {len(narrations)}")
@@ -73,24 +78,29 @@ async def make_video():
             ["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", audio_path],
             capture_output=True, text=True
         )
-        duration = float(result.stdout.strip()) + 1.0  # 多留1秒余量
+        audio_duration = float(result.stdout.strip())
+        duration = audio_duration + 1.5  # 留1.5秒余量
         
         # 3. 合成单页视频 (使用渐入渐出效果)
         # 缩放图片到 1080p 以保证视频质量，并添加填充确保比例一致
+        fade_duration = 0.5
         cmd = [
             "ffmpeg", "-y",
             "-loop", "1", "-i", img_path,
             "-i", audio_path,
             "-c:v", "libx264", "-t", str(duration),
             "-pix_fmt", "yuv420p",
-            "-vf", "scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:white",
-            "-c:a", "aac", "-shortest",
+            "-vf", f"scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:white,fade=t=in:st=0:d={fade_duration},fade=t=out:st={duration-fade_duration}:d={fade_duration}",
+            "-c:a", "aac",
             clip_path
         ]
         subprocess.run(cmd, capture_output=True)
         clip_files.append(clip_path)
         
     # 4. 合并所有片段
+    if not clip_files:
+        print("No clips to merge.")
+        return
     concat_file = os.path.join(TEMP_DIR, "concat.txt")
     with open(concat_file, "w") as f:
         for clip in clip_files:
@@ -100,7 +110,8 @@ async def make_video():
     cmd = [
         "ffmpeg", "-y",
         "-f", "concat", "-safe", "0", "-i", concat_file,
-        "-c", "copy", OUTPUT_VIDEO
+        "-c:v", "libx264", "-c:a", "aac", "-pix_fmt", "yuv420p",
+        OUTPUT_VIDEO
     ]
     subprocess.run(cmd, capture_output=True)
     
