@@ -1,0 +1,3 @@
+# 第4页 - 寻找蘑菇
+
+Children's book illustration in soft watercolor style. Deep in the forest, the golden puppy is using his nose to sniff around for mushrooms on the ground. The white kitten is carefully observing the surroundings with sharp eyes. Beautiful forest setting with tall trees, sunlight filtering through leaves, colorful mushrooms here and there. Both characters look excited. Cute Axel Scheffler inspired style.

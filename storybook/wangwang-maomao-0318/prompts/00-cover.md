@@ -1,0 +1,3 @@
+# 封面
+
+A warm and cute children's book cover illustration. A golden furry puppy (WangWang) with floppy ears, big round black eyes, and a red collar sits next to a snowy white kitten (MiaoMiao) with pointy ears, sapphire blue eyes, and a small bell on a collar. They are sitting together on a green meadow with a beautiful forest village in the background - trees, a small stream, flowers, and a cozy cottage. Soft watercolor style, warm colors, Axel Scheffler inspired, cute and whimsical. The title "汪汪狗和喵喵猫" in playful Chinese characters at the top. Sunny day with gentle clouds.

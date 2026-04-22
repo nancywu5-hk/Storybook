@@ -1,0 +1,3 @@
+# 第12页 - 结尾
+
+Children's book illustration in soft watercolor style. Night scene in the forest village. In the foreground, two cozy houses with warm light glowing from windows. One house has a dog house in the yard where the golden puppy sleeps peacefully. The other has a window where the white kitten can be seen sleeping on a cushion. Moon and stars in the night sky. Peaceful, heartwarming ending. Cute Axel Scheffler inspired style.
