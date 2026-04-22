@@ -51,13 +51,20 @@ BOOK_DIR=storybook/xxx-0318 npx tsx video.ts
 3. 情绪低谷（Emotional Low）→ 角色感到伤心/尴尬/害怕
 4. "HURRAY" 时刻（Resolution）→ 好朋友用行动帮忙解决
 5. 温暖结尾（Warm Ending）→ 一起做开心的事
+6. 提炼一句话核心主题（Core Theme）
+   → 核心主题如：分享、合作、理解、善意、克服恐惧；
+   → 一句话核心主题示例：好东西和朋友轮流分享、一起玩，会比自己独占更快乐
 ```
 
-创作规则：从不说教、不怪罪、情绪真实、每页 1-3 句话、画面独立叙事。
+创作规则遵守：
+从不说教、不怪罪、情绪真实、每页 1-3 句话、画面独立叙事。
+围绕一个核心的主题展开故事。主题参考，包括不限于“分享、合作、理解、善意、克服恐惧；”
 
-每页包含：页码、**文字**内容（中文）、画面描述。
+每页包含：页码、**文字**内容（中文）、细致的画面描述。
 
-输出：`storyboard.md`
+输出文件：
+— `storyboard.md` - 分镜脚本，包含每页页码、**文字**内容（中文）、画面描述
+- `script.md` - 台词讲稿，包含分镜脚本中每页的**文字**内容（中文）
 
 ### 第四步：生成 Prompts
 
@@ -66,7 +73,9 @@ BOOK_DIR=storybook/xxx-0318 npx tsx video.ts
 - 描述角色外观（与 character sheet 一致）
 - 描述场景、动作、表情、光线
 - 添加 "consistent character design"
-- 添加页码、storyboard.md中每页对应的**文字**内容（中文），页码与文字的字体样式一致，使用圆体 (Rounded Fonts)字体（中文）
+- 只有cover页，添加 storyboard.md中**文字**内容（中文）
+- 图片尺寸比例：16:9
+
 
 输出：`prompts/00-cover.md` ~ `prompts/NN-page.md`
 
@@ -105,7 +114,7 @@ storybook/{slug}-{MMdd}/
 │   ├── characters.md
 │   ├── characters-prompt.txt
 │   └── characters.jpeg
-├── storyboard.md
+├── storyboard.md，script.md
 ├── prompts/
 │   ├── 00-cover.md
 │   └── 01-page.md ~ ...
